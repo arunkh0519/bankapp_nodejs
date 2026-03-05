@@ -1,6 +1,6 @@
 ﻿import bcrypt from 'bcryptjs'
 import pool from '../db.js'
-import logger from './logger.js'
+import logger from '../logger.js'
 
 export const createUser = async ({ name, mobile, password }) => {
   const [existing] = await pool.query('SELECT id FROM users WHERE mobile = ? LIMIT 1', [mobile])

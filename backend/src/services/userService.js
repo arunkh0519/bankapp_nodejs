@@ -1,5 +1,5 @@
 ﻿import pool from '../db.js'
-import logger from './logger.js'
+import logger from '../logger.js'
 
 const generateOtp = () => {
   const value = Math.floor(100000 + Math.random() * 900000)

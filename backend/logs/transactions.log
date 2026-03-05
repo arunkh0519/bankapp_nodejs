@@ -1,0 +1,2 @@
+2026-03-05 15:20:28 [INFO]: Transfer initiated: userId=2, fromAccountId=2, toAccountNo=987654321, amount=123
+2026-03-05 15:20:35 [INFO]: Transfer verified: userId=2, transferId=4, amount=123.00, reference=TXN1772704235518601
