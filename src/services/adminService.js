@@ -1,5 +1,6 @@
 ﻿import bcrypt from 'bcryptjs'
 import pool from '../db.js'
+import logger from '../logger.js'
 
 export const createUser = async ({ name, mobile, password }) => {
   const [existing] = await pool.query('SELECT id FROM users WHERE mobile = ? LIMIT 1', [mobile])
@@ -11,6 +12,7 @@ export const createUser = async ({ name, mobile, password }) => {
     'INSERT INTO users (name, mobile, password_hash, role) VALUES (?, ?, ?, ?)',
     [name, mobile, hash, 'USER']
   )
+  logger.info(`User created: name=${name}, mobile=${mobile}`)
   return { id: result.insertId }
 }
 
