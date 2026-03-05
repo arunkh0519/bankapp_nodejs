@@ -1,4 +1,5 @@
 ﻿import pool from '../db.js'
+import logger from '../src/logger.js'
 
 const generateOtp = () => {
   const value = Math.floor(100000 + Math.random() * 900000)
@@ -14,6 +15,7 @@ export const createAccount = async ({ userId, accountNo, bankName, balance }) =>
     'INSERT INTO accounts (user_id, account_no, bank_name, balance) VALUES (?, ?, ?, ?)',
     [userId, accountNo, bankName, balance]
   )
+  logger.info(`Account created: userId=${userId}, accountNo=${accountNo}, bankName=${bankName}, balance=${balance}`)
   return { id: result.insertId }
 }
 
@@ -75,7 +77,7 @@ export const initiateTransfer = async ({ userId, fromAccountId, toAccountNo, amo
     'INSERT INTO transfer_otps (from_account_id, to_account_id, amount, otp, expires_at) VALUES (?, ?, ?, ?, DATE_ADD(NOW(), INTERVAL ? MINUTE))',
     [fromAccountId, toAccount.id, amount, otp, ttl]
   )
-
+  logger.info(`Transfer initiated: userId=${userId}, fromAccountId=${fromAccountId}, toAccountNo=${toAccountNo}, amount=${amount}`)
   return { transferId: result.insertId, otp }
 }
 
@@ -136,6 +138,7 @@ export const verifyTransfer = async ({ userId, transferId, otp }) => {
       [transfer.from_account_id, transfer.to_account_id, transfer.amount, 'SUCCESS', reference]
     )
     await conn.query('UPDATE transfer_otps SET status = ? WHERE id = ?', ['SUCCESS', transferId])
+    logger.info(`Transfer verified: userId=${userId}, transferId=${transferId}, amount=${transfer.amount}, reference=${reference}`)
     await conn.commit()
     return { reference }
   } catch (err) {
