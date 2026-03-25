@@ -18,7 +18,7 @@ services:
       DB_USER: root
       DB_PASSWORD: example
       DB_NAME: bank_app
-      JWT_SECRET: kQwWQyvCqt4yzpdON31SehEfOvsyB8v/FmZuWMfLb+CFeTw5mKKQFzMeMwHA/1mU
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET not set}
       JWT_EXPIRES_IN: 1d
       OTP_TTL_MINUTES: 5
     ports:
